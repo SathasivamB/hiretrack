@@ -94,6 +94,9 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   console.log(`🔑 Login attempt for: ${email}`);
+  
+  if (!email) return res.status(400).json({ success: false, message: 'Email is required.' });
+
   try {
     const userDoc = await db.collection('users').doc(email.toLowerCase().trim()).get();
     if (userDoc.exists) {

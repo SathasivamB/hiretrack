@@ -56,9 +56,10 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ success: false, message: 'This email is already registered.' });
     }
 
-    // Generate initials
-    const cleanName = (name || 'User').trim();
-    const initials = (cleanName.charAt(0) + cleanName.charAt(cleanName.length - 1)).toUpperCase();
+    // Generate initials safely
+    const nameToClean = (name && typeof name === 'string') ? name : 'Student User';
+    const cleanName = nameToClean.trim();
+    const initials = (cleanName.charAt(0) + cleanName.charAt(Math.max(0, cleanName.length - 1))).toUpperCase();
 
     const newUser = {
       email: email.toLowerCase(),

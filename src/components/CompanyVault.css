@@ -1,0 +1,181 @@
+.vault-header {
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.current-exp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid var(--border-light);
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.current-exp-badge span {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.current-exp-badge strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+}
+
+.vault-notification {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.vault-notification.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.vault-notification.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.vault-card {
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.vault-card.locked {
+  background: #f8fafc;
+}
+
+.vault-card.unlocked {
+  box-shadow: var(--shadow-md);
+}
+
+.vault-card.unlocked:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.vault-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.company-logo-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.locked .company-logo-large {
+  filter: grayscale(100%) opacity(0.7);
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.unlocked {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.locked {
+  background: #f1f5f9;
+  color: var(--text-tertiary);
+}
+
+.vault-info {
+  margin-bottom: 32px;
+  flex: 1;
+}
+
+.vault-info h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.company-type {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.vault-action {
+  margin-top: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.play-btn {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border-color: var(--brand-blue);
+  color: var(--brand-blue);
+}
+
+.play-btn:hover {
+  background: #eff6ff;
+}
+
+.unlock-btn {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.unlock-btn.can-afford {
+  background: var(--text-primary);
+  color: white;
+}
+
+.unlock-btn.can-afford:hover {
+  background: #374151;
+}
+
+.unlock-btn.cannot-afford {
+  background: #f1f5f9;
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}

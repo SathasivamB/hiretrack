@@ -1,0 +1,21 @@
+.timer-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid var(--border-light);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.text-danger {
+  color: #ef4444;
+}
+
+.option-btn.selected {
+  border-color: var(--brand-blue);
+  background-color: rgba(37, 99, 235, 0.05);
+}

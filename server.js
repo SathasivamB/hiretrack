@@ -8,11 +8,17 @@ let serviceAccount;
 const fs = require('fs');
 
 if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    console.log("✅ Firebase credentials loaded from ENV (Project: " + serviceAccount.project_id + ")");
+  } catch (e) {
+    console.error("❌ ERROR: Failed to parse FIREBASE_SERVICE_ACCOUNT. Check for JSON errors.");
+  }
 } else if (fs.existsSync("./serviceAccountKey.json")) {
   serviceAccount = require("./serviceAccountKey.json");
+  console.log("✅ Firebase credentials loaded from local file.");
 } else {
-  console.warn("WARNING: No Firebase credentials found. API will fail.");
+  console.warn("⚠️ WARNING: No Firebase credentials found. API will fail.");
 }
 
 if (serviceAccount) {

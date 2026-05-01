@@ -7,22 +7,18 @@ const path = require("path");
 let serviceAccount;
 const fs = require('fs');
 
-if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-  try {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-    // Fix for line breaks in Render ENV variables
-    if (serviceAccount.private_key) {
-      serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-    }
-    console.log("✅ Firebase credentials loaded and cleaned (Project: " + serviceAccount.project_id + ")");
-  } catch (e) {
-    console.error("❌ ERROR: Failed to parse FIREBASE_SERVICE_ACCOUNT. Check for JSON errors.");
-  }
+if (process.env.FB_PRIVATE_KEY) {
+  serviceAccount = {
+    projectId: process.env.FB_PROJECT_ID,
+    clientEmail: process.env.FB_CLIENT_EMAIL,
+    privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n')
+  };
+  console.log("✅ Firebase loaded from granular ENV (Project: " + serviceAccount.projectId + ")");
 } else if (fs.existsSync("./serviceAccountKey.json")) {
   serviceAccount = require("./serviceAccountKey.json");
-  console.log("✅ Firebase credentials loaded from local file.");
+  console.log("✅ Firebase loaded from local file.");
 } else {
-  console.warn("⚠️ WARNING: No Firebase credentials found. API will fail.");
+  console.warn("⚠️ WARNING: No Firebase credentials found.");
 }
 
 if (serviceAccount) {

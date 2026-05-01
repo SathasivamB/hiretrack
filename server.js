@@ -19,9 +19,10 @@ if (serviceAccount) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
-  // Fix for Firestore undefined values
-  db.settings({ ignoreUndefinedProperties: true });
 }
+
+const db = admin.firestore();
+db.settings({ ignoreUndefinedProperties: true });
 
 const app = express();
 const PORT = process.env.PORT || 5000;

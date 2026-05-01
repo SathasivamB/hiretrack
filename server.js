@@ -44,6 +44,43 @@ const addLog = async (action, details) => {
 
 // --- API ROUTES ---
 
+app.post('/api/register', async (req, res) => {
+  const { email, password, name, studentId, department } = req.body;
+  try {
+    const userRef = db.collection('users').doc(email.toLowerCase());
+    const doc = await userRef.get();
+    
+    if (doc.exists) {
+      return res.status(400).json({ success: false, message: 'User already exists' });
+    }
+
+    // Generate initials
+    const cleanName = name.trim();
+    const initials = (cleanName.charAt(0) + cleanName.charAt(cleanName.length - 1)).toUpperCase();
+
+    const newUser = {
+      email: email.toLowerCase(),
+      password,
+      name,
+      studentId,
+      department,
+      initials,
+      exp: 0,
+      unlockedCompanies: ['StartupInc'],
+      questionsAnswered: 0,
+      accuracy: 0,
+      streak: 0,
+      history: [],
+      editPermission: 'none'
+    };
+
+    await userRef.set(newUser);
+    res.json({ success: true, user: newUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   try {

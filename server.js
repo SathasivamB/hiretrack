@@ -9,11 +9,11 @@ const fs = require('fs');
 
 if (process.env.FB_PRIVATE_KEY) {
   serviceAccount = {
-    projectId: process.env.FB_PROJECT_ID,
-    clientEmail: process.env.FB_CLIENT_EMAIL,
-    privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n')
+    project_id: process.env.FB_PROJECT_ID,
+    client_email: process.env.FB_CLIENT_EMAIL,
+    private_key: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n')
   };
-  console.log("✅ Firebase loaded from granular ENV (Project: " + serviceAccount.projectId + ")");
+  console.log("✅ Firebase loaded from granular ENV (Project: " + serviceAccount.project_id + ")");
 } else if (fs.existsSync("./serviceAccountKey.json")) {
   serviceAccount = require("./serviceAccountKey.json");
   console.log("✅ Firebase loaded from local file.");

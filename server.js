@@ -7,22 +7,12 @@ const path = require("path");
 let serviceAccount;
 const fs = require('fs');
 
-if (process.env.FB_PRIVATE_KEY) {
-  let pk = process.env.FB_PRIVATE_KEY.trim();
-  // Remove accidental quotes if they were pasted
-  if (pk.startsWith('"') && pk.endsWith('"')) pk = pk.slice(1, -1);
-  
-  serviceAccount = {
-    project_id: process.env.FB_PROJECT_ID,
-    client_email: process.env.FB_CLIENT_EMAIL,
-    private_key: pk.replace(/\\n/g, '\n')
-  };
-  console.log("✅ Firebase cleaned & loaded (Project: " + serviceAccount.project_id + ")");
-} else if (fs.existsSync("./serviceAccountKey.json")) {
+// Render Secret Files are placed in the same directory as the code
+if (fs.existsSync("./serviceAccountKey.json")) {
   serviceAccount = require("./serviceAccountKey.json");
-  console.log("✅ Firebase loaded from local file.");
+  console.log("✅ Firebase loaded from Secret File (Project: " + serviceAccount.project_id + ")");
 } else {
-  console.warn("⚠️ WARNING: No Firebase credentials found.");
+  console.warn("⚠️ WARNING: serviceAccountKey.json not found! API will fail.");
 }
 
 if (serviceAccount) {

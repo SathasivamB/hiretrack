@@ -3,12 +3,23 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-// Use Service Account from root
-const serviceAccount = require("./serviceAccountKey.json");
+// Initialize Firebase safely
+let serviceAccount;
+const fs = require('fs');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else if (fs.existsSync("./serviceAccountKey.json")) {
+  serviceAccount = require("./serviceAccountKey.json");
+} else {
+  console.warn("WARNING: No Firebase credentials found. API will fail.");
+}
+
+if (serviceAccount) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
 
 const db = admin.firestore();
 const app = express();

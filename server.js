@@ -19,9 +19,10 @@ if (serviceAccount) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
+  // Fix for Firestore undefined values
+  db.settings({ ignoreUndefinedProperties: true });
 }
 
-const db = admin.firestore();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -55,13 +56,13 @@ app.post('/api/register', async (req, res) => {
     }
 
     // Generate initials
-    const cleanName = name.trim();
+    const cleanName = (name || 'User').trim();
     const initials = (cleanName.charAt(0) + cleanName.charAt(cleanName.length - 1)).toUpperCase();
 
     const newUser = {
       email: email.toLowerCase(),
-      password,
-      name,
+      password: password || '',
+      name: name || 'Student',
       studentId: studentId || '',
       department: department || '',
       initials,

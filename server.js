@@ -48,14 +48,19 @@ const addLog = async (action, details) => {
 
 app.post('/api/register', async (req, res) => {
   const { email, password, name, studentId, department } = req.body;
+  console.log(`📝 Attempting registration for: ${email}`);
+  
+  if (!email) return res.status(400).json({ success: false, message: 'Email is required.' });
+
   try {
-    const userRef = db.collection('users').doc(email.toLowerCase());
+    const userRef = db.collection('users').doc(email.toLowerCase().trim());
     const doc = await userRef.get();
     
     if (doc.exists) {
+      console.log(`⚠️ Registration failed: ${email} already exists.`);
       return res.status(400).json({ success: false, message: 'This email is already registered.' });
     }
-
+    // Continue with registration logic
     // Generate initials safely
     const nameToClean = (name && typeof name === 'string') ? name : 'Student User';
     const cleanName = nameToClean.trim();
@@ -88,14 +93,25 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log(`🔑 Login attempt for: ${email}`);
   try {
-    const userDoc = await db.collection('users').doc(email.toLowerCase()).get();
-    if (userDoc.exists && userDoc.data().password === password) {
-      res.json({ success: true, user: userDoc.data() });
+    const userDoc = await db.collection('users').doc(email.toLowerCase().trim()).get();
+    if (userDoc.exists) {
+      if (userDoc.data().password === password) {
+        console.log(`✅ Login successful: ${email}`);
+        res.json({ success: true, user: userDoc.data() });
+      } else {
+        console.log(`❌ Login failed: Password mismatch for ${email}`);
+        res.status(401).json({ success: false, message: 'Invalid credentials' });
+      }
     } else {
+      console.log(`❌ Login failed: User not found - ${email}`);
       res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
-  } catch (error) { res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    console.error('Login Error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post('/api/profile', async (req, res) => {

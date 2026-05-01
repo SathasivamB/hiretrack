@@ -151,7 +151,7 @@ app.post('/api/admin/wipe', async (req, res) => {
 });
 
 // Fallback to React Router
-app.get('(.*)', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 

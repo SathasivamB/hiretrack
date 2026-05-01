@@ -51,7 +51,7 @@ app.post('/api/register', async (req, res) => {
     const doc = await userRef.get();
     
     if (doc.exists) {
-      return res.status(400).json({ success: false, message: 'User already exists' });
+      return res.status(400).json({ success: false, message: 'This email is already registered.' });
     }
 
     // Generate initials
@@ -62,8 +62,8 @@ app.post('/api/register', async (req, res) => {
       email: email.toLowerCase(),
       password,
       name,
-      studentId,
-      department,
+      studentId: studentId || '',
+      department: department || '',
       initials,
       exp: 0,
       unlockedCompanies: ['StartupInc'],
@@ -75,9 +75,11 @@ app.post('/api/register', async (req, res) => {
     };
 
     await userRef.set(newUser);
+    console.log(`New user registered: ${email}`);
     res.json({ success: true, user: newUser });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Registration Error:', error);
+    res.status(500).json({ success: false, message: 'Registration failed: ' + error.message });
   }
 });
 
